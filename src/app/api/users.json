@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Jenil Patel",
+      "email": "jenil.patel@example.com",
+      "role": "Manager",
+      "avatar":  "https://ui-avatars.com/api/?name=Jenil+Patel&background=2563EB&color=000",
+      "status": "active",
+      "lastActive": "2024-03-15T10:30:00Z"
+    }
+  ]
+} 

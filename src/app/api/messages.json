@@ -1,0 +1,26 @@
+{
+  "messages": [
+    {
+      "id": 1,
+      "from": {
+        "id": 2,
+        "name": "Sarah Wilson",
+        "avatar": "/avatars/sarah.jpg"
+      },
+      "content": "Hi, can we discuss the project updates?",
+      "timestamp": "2024-03-15T10:28:00Z",
+      "read": false
+    },
+    {
+      "id": 2,
+      "from": {
+        "id": 3,
+        "name": "Mike Johnson",
+        "avatar": "/avatars/mike.jpg"
+      },
+      "content": "Team meeting at 2 PM",
+      "timestamp": "2024-03-15T09:45:00Z",
+      "read": false
+    }
+  ]
+} 
