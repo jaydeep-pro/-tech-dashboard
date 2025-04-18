@@ -308,54 +308,53 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-200">
+    <aside className="fixed top-0 left-0 w-64 h-full bg-white border-r border-gray-200">
       <div className="flex flex-col h-full">
-        {/* Logo */}
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center gap-2">
+        <div className="h-16 flex items-center px-6 border-b border-gray-200">
+          <Link href="/" className="flex items-center gap-2">
             <img src="/images/logo.svg" alt="Mytech Logo" className="w-8 h-8" />
-            <h1 className="text-xl font-semibold text-gray-900">Mytech</h1>
-          </div>
+            <span className="text-xl font-semibold text-gray-900">Mytech</span>
+          </Link>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 px-4 py-6">
-          <ul className="space-y-2">
+        <nav className="flex-1 overflow-y-auto p-4">
+          <ul className="space-y-1">
             {navigation.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href));
+
               return (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={`flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       isActive
                         ? "bg-blue-50 text-blue-600"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        : "text-gray-600 hover:bg-gray-50"
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={isActive ? "text-blue-600" : "text-gray-400"}
-                      >
-                        {item.icon}
-                      </div>
-                      {item.name}
-                    </div>
+                    <span
+                      className={isActive ? "text-blue-600" : "text-gray-400"}
+                    >
+                      {item.icon}
+                    </span>
+                    {item.name}
                     {item.badge && (
-                      <span className="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-600 rounded">
+                      <span className="ml-auto bg-blue-100 text-blue-600 text-xs font-medium px-2 py-0.5 rounded">
                         {item.badge}
                       </span>
                     )}
                     {item.hasDropdown && (
                       <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
+                        className={`w-4 h-4 ml-auto text-gray-400 ${
+                          isActive ? "rotate-180" : ""
+                        }`}
+                        viewBox="0 0 16 16"
                         fill="none"
-                        className="text-gray-400"
                       >
                         <path
-                          d="M5 7.5L10 12.5L15 7.5"
+                          d="M4 6L8 10L12 6"
                           stroke="currentColor"
                           strokeWidth="1.5"
                           strokeLinecap="round"
@@ -370,6 +369,6 @@ export default function Sidebar() {
           </ul>
         </nav>
       </div>
-    </div>
+    </aside>
   );
 }

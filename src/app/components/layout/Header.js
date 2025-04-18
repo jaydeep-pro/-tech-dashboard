@@ -172,11 +172,9 @@ export default function Header() {
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               className="flex items-center gap-2 p-1 rounded-lg hover:bg-gray-50"
             >
-              <img
-                src="/avatars/jenil.jpg"
-                alt="Jenil Patel"
-                className="w-8 h-8 rounded-full object-cover"
-              />
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium text-sm">
+                JP
+              </div>
               <div className="hidden md:block text-left">
                 <div className="text-sm font-medium text-gray-900">
                   Jenil Patel
