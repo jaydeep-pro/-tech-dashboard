@@ -1,3 +1,30 @@
+# Tech Dashboard
+
+A modern dashboard built with Next.js and Tailwind CSS.
+
+## Formatting
+
+This project uses Prettier for code formatting. To ensure consistent formatting across the project:
+
+1. Install the Prettier VS Code extension
+2. Run `npm install` to install all dependencies
+3. The project will automatically format on save in VS Code
+
+### Formatting Commands
+
+- `npm run format` - Format all files
+- `npm run format:check` - Check if files are formatted correctly
+
+### Formatting Rules
+
+- Single quotes for strings
+- 2 spaces for indentation
+- 100 characters line length
+- Semicolons at the end of statements
+- Trailing commas in multi-line objects and arrays
+- No tabs, only spaces
+- Consistent line endings (LF)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
