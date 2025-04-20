@@ -1,65 +1,103 @@
-"use client";
+'use client';
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import { useState } from 'react';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+export default function SalesDonutChart({ data }) {
+  if (!data || !data.sources || data.sources.length === 0) return null;
 
-const data = {
-  labels: ["Official Website", "Offline Store", "Amazon Store", "Reseller"],
-  datasets: [
-    {
-      data: [10000, 10000, 10000, 10000],
-      backgroundColor: ["#2563eb", "#3b82f6", "#60a5fa", "#93c5fd"],
-      borderWidth: 0,
-    },
-  ],
-};
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444'];
+  const total = data.sources.reduce((sum, source) => sum + (Number(source.value) || 0), 0);
 
-const options = {
-  responsive: true,
-  cutout: "75%",
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-};
+  // Helper function to format numbers
+  const formatNumber = number => {
+    if (!number || isNaN(number)) return '0';
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(number);
+  };
 
-const SalesDonutChart = () => {
+  // Helper function to calculate growth percentage
+  const getGrowthPercentage = () => {
+    if (!data.growth || isNaN(data.growth)) return '+0.00%';
+    return `${data.growth >= 0 ? '+' : ''}${Number(data.growth).toFixed(2)}%`;
+  };
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white rounded-xl">
+      <div className="px-5 py-4 flex justify-between items-center border-b border-gray-100">
         <h2 className="text-lg font-medium">Sales Source</h2>
-        <span className="text-green-500 text-sm">+10%</span>
+        <div className="text-sm text-gray-500">This Month</div>
       </div>
-      <div className="relative">
-        <div className="w-48 h-48 mx-auto">
-          <Doughnut data={data} options={options} />
-        </div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <div className="text-2xl font-semibold">$75.5k</div>
-          <div className="text-sm text-gray-500">Total Sales</div>
-        </div>
-      </div>
-      <div className="mt-6 space-y-2">
-        {data.labels.map((label, index) => (
-          <div key={label} className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div
-                className={`w-3 h-3 rounded-full`}
-                style={{
-                  backgroundColor: data.datasets[0].backgroundColor[index],
-                }}
-              ></div>
-              <span className="text-sm">{label}</span>
-            </div>
-            <span className="text-sm font-medium">$10,000</span>
+      <div className="p-5">
+        <div className="relative w-full aspect-square max-w-[240px] mx-auto mb-6">
+          <svg className="w-full h-full transform -rotate-90">
+            {data.sources.map((source, index) => {
+              const value = Number(source.value) || 0;
+              const percentage = total > 0 ? (value / total) * 100 : 0;
+              const circumference = 2 * Math.PI * 40;
+              const offset = index * (circumference / data.sources.length);
+              const dashArray = `${(percentage / 100) * circumference} ${circumference}`;
+              const isHovered = hoveredIndex === index;
+
+              return (
+                <circle
+                  key={source.name}
+                  cx="50%"
+                  cy="50%"
+                  r="40"
+                  fill="none"
+                  stroke={colors[index]}
+                  strokeWidth={isHovered ? '14' : '12'}
+                  strokeDasharray={dashArray}
+                  strokeDashoffset={-offset}
+                  className="transform origin-center transition-all duration-300"
+                  style={{
+                    filter: isHovered ? 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))' : 'none',
+                    opacity: hoveredIndex === null || isHovered ? 1 : 0.7,
+                  }}
+                />
+              );
+            })}
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="text-3xl font-semibold">${formatNumber(total)}</div>
+            <div className="text-sm text-green-500">{getGrowthPercentage()}</div>
           </div>
-        ))}
+        </div>
+
+        <div className="space-y-3">
+          {data.sources.map((source, index) => {
+            const value = Number(source.value) || 0;
+            const percentage = total > 0 ? ((value / total) * 100).toFixed(2) : '0.00';
+
+            return (
+              <div
+                key={source.name}
+                className="flex items-center justify-between p-2 rounded-lg transition-colors duration-200 hover:bg-gray-50"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-3 h-3 rounded-full transition-transform duration-200"
+                    style={{
+                      backgroundColor: colors[index],
+                      transform: hoveredIndex === index ? 'scale(1.2)' : 'scale(1)',
+                    }}
+                  />
+                  <span className="text-sm text-gray-600">{source.name}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-gray-500">{percentage}%</span>
+                  <span className="text-sm font-medium">${formatNumber(value)}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
-};
-
-export default SalesDonutChart;
+}
