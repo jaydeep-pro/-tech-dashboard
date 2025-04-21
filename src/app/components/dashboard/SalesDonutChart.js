@@ -3,9 +3,10 @@
 import { useState } from 'react';
 
 export default function SalesDonutChart({ data }) {
-  if (!data || !data.sources || data.sources.length === 0) return null;
+
 
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  if (!data || !data.sources || data.sources.length === 0) return null;
   const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444'];
   const total = data.sources.reduce((sum, source) => sum + (Number(source.value) || 0), 0);
 

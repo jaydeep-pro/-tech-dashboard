@@ -58,7 +58,7 @@ export default function Home() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-medium">Welcome Back Jenil</h1>
-          <p className="text-gray-500 mt-1">Here's what's happening with your store today</p>
+          <p className="text-gray-500 mt-1">Here&apos;s what&apos;s happening with your store today</p>
         </div>
         <DateSelector selected={selectedDate} onSelect={handleDateChange} />
       </div>
